@@ -1,0 +1,36 @@
+{
+  "name": "react-glassy-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "React library for creating beautiful liquid glass morphism effects",
+  "author": {
+    "name": "zeroqs",
+    "url": "https://github.com/zeroqs"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/zeroqs/react-glassy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeroqs/react-glassy.git"
+  },
+  "bugs": "https://github.com/zeroqs/react-glassy/issues",
+  "keywords": [
+    "react",
+    "glassmorphism",
+    "glass",
+    "morphism",
+    "liquid-glass",
+    "glass-effect",
+    "ui",
+    "components"
+  ],
+  "scripts": {
+    "docs:dev": "pnpm --filter docs dev",
+    "core:dev": "pnpm --filter react-glassy dev",
+    "core:build": "pnpm --filter react-glassy build",
+    "docs:build": "pnpm --filter docs build"
+  },
+  "devDependencies": {
+    "pnpm": "^9.0.0"
+  }
+}

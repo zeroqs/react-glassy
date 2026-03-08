@@ -1,0 +1,117 @@
+---
+title: HOC withLiquid
+description: Higher-order component for wrapping components with glass effects
+---
+
+The `withLiquid` [higher-order component (HOC)](https://www.patterns.dev/react/hoc-pattern/) provides an alternative way to apply glass effects to your components. It's useful when you want to permanently attach a glass effect to a specific component.
+
+## Basic Usage
+
+Wrap your component with `withLiquid`:
+
+```tsx
+import { withLiquid } from "react-glassy";
+import "react-glassy/styles.css";
+
+function ProfileCard({ name, avatar }) {
+  return (
+    <div>
+      <img src={avatar} alt={name} />
+      <h3>{name}</h3>
+    </div>
+  );
+}
+
+export const GlassProfileCard = withLiquid(ProfileCard, {
+  preset: "frost",
+  config: { borderRadius: "16px" },
+});
+```
+
+<LiveDemo className="min-h-[350px]">
+  <div className="grid grid-cols-2 gap-4">
+    <div>
+      <h4 className="text-sm font-medium mb-4">Regular Component</h4>
+      <div className="p-4 border rounded-lg bg-card h-full">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-primary/20 rounded-full mx-auto mb-2" />
+        </div>
+      </div>
+    </div>
+    <div>
+      <h4 className="text-sm font-medium mb-4">With Glass HOC</h4>
+      <LiquidGlass preset="frost" config={{ borderRadius: "16px" }}>
+        <div className="p-4">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-primary/20 rounded-full mx-auto mb-2" />
+          </div>
+        </div>
+      </LiquidGlass>
+    </div>
+  </div>
+</LiveDemo>
+
+## Passing Configuration
+
+You can pass glass configuration when creating the HOC:
+
+```tsx
+import { withLiquid } from "react-glassy";
+
+const GlassButton = withLiquid(Button, {
+  preset: "edge",
+  config: {
+    blur: "8px",
+    specular: false,
+  },
+});
+```
+
+## Complete Example
+
+```tsx
+import { withLiquid } from "react-glassy";
+import "react-glassy/styles.css";
+
+interface CardProps {
+  title: string;
+  description: string;
+  className?: string;
+}
+
+function Card({ title, description, className }: CardProps) {
+  return (
+    <div className={className}>
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </div>
+  );
+}
+
+export const GlassCard = withLiquid(Card, {
+  preset: "frost",
+  config: {
+    borderRadius: "24px",
+  },
+});
+
+function App() {
+  return (
+    <GlassCard
+      title="Glass Card"
+      description="This card always has a glass effect"
+    />
+  );
+}
+```
+
+<LiveDemo>
+  <LiquidGlass preset="frost" config={{ borderRadius: "24px" }}>
+    <div className="p-6">
+      <h2 className="text-2xl font-semibold mb-2">Glass Card</h2>
+      <p className="text-muted-foreground">
+        This card always has a glass effect applied via HOC
+      </p>
+    </div>
+  </LiquidGlass>
+</LiveDemo>

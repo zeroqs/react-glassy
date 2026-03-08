@@ -1,0 +1,107 @@
+---
+title: Quick Start
+description: Get started with React Glassy in your project
+icon: Rocket
+---
+
+React Glassy is a React library for creating beautiful liquid glass morphism effects. It provides customizable glass components with built-in presets, SVG filters, and real-time configuration options.
+
+## Installation
+
+Install React Glassy using your preferred package manager:
+
+```bash tab="npm"
+npm install react-glassy
+```
+
+```bash tab="pnpm"
+pnpm add react-glassy
+```
+
+```bash tab="yarn"
+yarn add react-glassy
+```
+
+## Import Styles
+
+Import the CSS file in your application entry point:
+
+```tsx
+import "react-glassy/styles.css";
+```
+
+## Basic Example
+
+Here's a minimal example to get you started with either Tailwind or inline styles:
+
+```tsx tab="tailwind"
+import { SVGFilters, LiquidGlass } from "react-glassy";
+import "react-glassy/styles.css";
+
+function App() {
+  return (
+    <>
+      <SVGFilters>
+        <SVGFilters.DefaultFilters />
+      </SVGFilters>
+
+      <LiquidGlass>
+        <div className="p-6 text-center">
+          <h2 className="text-2xl font-semibold mb-2">Wow</h2>
+          <p className="text-muted-foreground">
+            This is a default preset glass morphism effect.
+          </p>
+        </div>
+      </LiquidGlass>
+    </>
+  );
+}
+```
+
+```tsx tab="css"
+import { SVGFilters, LiquidGlass } from "react-glassy";
+import "react-glassy/styles.css";
+
+function App() {
+  return (
+    <>
+      <SVGFilters>
+        <SVGFilters.DefaultFilters />
+      </SVGFilters>
+
+      <LiquidGlass>
+        <div style={{ padding: "24px", textAlign: "center" }}>
+          <h2
+            style={{
+              margin: "0 0 8px",
+              fontSize: "1.5rem",
+              fontWeight: 600,
+            }}
+          >
+            Wow
+          </h2>
+          <p
+            style={{
+              margin: 0,
+              color: "rgba(255, 255, 255, 0.7)",
+            }}
+          >
+            This is a default preset glass morphism effect.
+          </p>
+        </div>
+      </LiquidGlass>
+    </>
+  );
+}
+```
+
+<LiveDemo>
+  <LiquidGlass>
+    <div className="p-6 text-center">
+      <h2 className="text-2xl font-semibold mb-2">Wow</h2>
+      <p className="text-muted-foreground">
+        This is a default preset glass morphism effect.
+      </p>
+    </div>
+  </LiquidGlass>
+</LiveDemo>

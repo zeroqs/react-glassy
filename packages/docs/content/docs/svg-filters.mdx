@@ -1,0 +1,95 @@
+---
+title: SVG Filters
+description: Understanding and using SVG filters for glass effects
+---
+
+SVG filters are essential for creating the distortion effects in React Glassy. The `SVGFilters` is a [compound component](https://www.patterns.dev/react/compound-pattern/) that manages all SVG filter definitions.
+
+## Why SVG Filters?
+
+SVG filters provide the distortion effect that makes the glass look more realistic. They use SVG `<filter>` elements with `feTurbulence`, `feGaussianBlur`, and `feDisplacementMap` to create the liquid-like morphing effect.
+
+## Basic Usage
+
+Always wrap your app with `SVGFilters` and include `DefaultFilters` if you want to enable built-in frost levels:
+
+```tsx
+import "react-glassy/styles.css";
+
+import { SVGFilters, LiquidGlass } from "react-glassy";
+
+function App() {
+  return (
+    <>
+      <SVGFilters>
+        <SVGFilters.DefaultFilters />
+      </SVGFilters>
+
+      <LiquidGlass>
+        <div>Your content</div>
+      </LiquidGlass>
+    </>
+  );
+}
+```
+
+## Custom Filters
+
+You can add your own custom SVG filters alongside the default ones:
+
+```tsx
+import { SVGFilters, LiquidGlass } from "react-glassy";
+import "react-glassy/styles.css";
+
+<SVGFilters>
+  <SVGFilters.DefaultFilters />
+  <filter id="my-custom-filter" x="0%" y="0%" width="100%" height="100%">
+    <feTurbulence
+      type="fractalNoise"
+      baseFrequency="0.025"
+      numOctaves="4"
+      seed="55"
+    />
+    <feGaussianBlur stdDeviation="3.5" result="blur" />
+    <feDisplacementMap
+      in="SourceGraphic"
+      in2="blur"
+      scale="100"
+      xChannelSelector="R"
+      yChannelSelector="G"
+    />
+  </filter>
+</SVGFilters>
+
+<LiquidGlass config={{ frost: 'my-custom-filter', blur: '16px' }}>
+  <div>Using custom filter</div>
+</LiquidGlass>
+```
+
+<LiveDemo>
+  <SVGFilters>
+    <SVGFilters.DefaultFilters />
+    <filter id="demo-custom-filter" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.025"
+        numOctaves="4"
+        seed="55"
+      />
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="blur"
+        scale="100"
+        xChannelSelector="R"
+        yChannelSelector="G"
+      />
+    </filter>
+  </SVGFilters>
+  <LiquidGlass config={{ frost: "demo-custom-filter", blur: "16px" }}>
+    <div className="p-6 text-center">
+      <h3 className="text-xl font-semibold mb-2">Custom Filter</h3>
+      <p className="text-sm text-muted-foreground">Using a custom SVG filter</p>
+    </div>
+  </LiquidGlass>
+</LiveDemo>

@@ -1,0 +1,107 @@
+---
+title: LiquidGlass Component
+description: The main component for creating glass morphism effects
+---
+
+The `LiquidGlass` component is the core of React Glassy. It wraps your content with a beautiful glass morphism effect that can be customized through presets or direct configuration.
+
+## Props
+
+| Prop        | Type                   | Default      | Description                                                     |
+| ----------- | ---------------------- | ------------ | --------------------------------------------------------------- |
+| `preset`    | `GlassPreset`          | `undefined`  | Built-in preset name (`default`, `pulse`, `frost`, `edge`)      |
+| `config`    | `Partial<GlassConfig>` | `undefined`  | Custom configuration to override preset or create custom effect |
+| `className` | `string`               | `undefined`  | Additional CSS classes                                          |
+| `children`  | `ReactNode`            | **required** | Content to wrap with glass effect                               |
+
+## Basic Usage
+
+Use a preset for quick setup:
+
+```tsx
+import { LiquidGlass } from "react-glassy";
+import "react-glassy/styles.css";
+
+<LiquidGlass preset="frost">
+  <div>Your content here</div>
+</LiquidGlass>;
+```
+
+<LiveDemo>
+  <LiquidGlass preset="frost">
+    <div className="p-6 text-center">
+      <h3 className="text-xl font-semibold mb-2">Frost Preset</h3>
+      <p className="text-sm text-muted-foreground">A beautiful frost effect</p>
+    </div>
+  </LiquidGlass>
+</LiveDemo>
+
+## Custom Configuration
+
+Override preset values or create a fully custom configuration:
+
+```tsx tab="createPreset"
+import { createPreset, LiquidGlass } from "react-glassy";
+import "react-glassy/styles.css";
+
+const customPreset = createPreset({
+  blur: "16px",
+  tint: "rgba(200, 100, 255, 0.2)",
+  frost: "medium",
+  specular: true,
+  borderRadius: "20px",
+});
+
+<LiquidGlass config={customPreset}>
+  <div>Custom preset content</div>
+</LiquidGlass>;
+```
+
+```tsx tab="config"
+import { LiquidGlass } from "react-glassy";
+import "react-glassy/styles.css";
+
+<LiquidGlass
+  preset="edge"
+  config={{
+    blur: "6px",
+    specular: false,
+    borderRadius: "16px",
+  }}
+>
+  <div>Customized glass effect</div>
+</LiquidGlass>;
+```
+
+<LiveDemo>
+  <LiquidGlass
+    preset="edge"
+    config={{
+      blur: "6px",
+      specular: false,
+      borderRadius: "16px",
+    }}
+  >
+    <div className="p-6 text-center">
+      <h3 className="text-xl font-semibold mb-2">Custom Config</h3>
+      <p className="text-sm text-muted-foreground">Overriding preset values</p>
+    </div>
+  </LiquidGlass>
+</LiveDemo>
+
+## Interactive Playground
+
+Use the playground below to experiment with all configuration options in real-time:
+
+<GlassPlayground />
+
+## Configuration Options
+
+The `config` prop accepts a `Partial<GlassConfig>` object with the following properties:
+
+- **`blur`** (string): Backdrop blur amount (e.g., `"12px"`)
+- **`tint`** (string): Background tint color (e.g., `"rgba(255, 255, 255, 0.15)"`)
+- **`shine`** (string): Box-shadow for shine effect (e.g., `"inset 2px 2px 3px rgba(255, 255, 255, 0.6)"`)
+- **`frost`** (FrostLevel): Frost distortion level (`"none"`, `"light"`, `"medium"`, `"heavy"`)
+- **`specular`** (boolean): Enable specular highlights
+- **`borderRadius`** (string, optional): Border radius (e.g., `"24px"`)
