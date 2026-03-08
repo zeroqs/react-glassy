@@ -43,7 +43,7 @@ function App() {
 
 ## Documentation
 
-Visit t--
+Visit [docs](https://react-glassy-docs.vercel.app/docs)
 
 ## License
 
