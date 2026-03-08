@@ -1,6 +1,6 @@
 {
   "name": "react-glassy-monorepo",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "React library for creating beautiful liquid glass morphism effects",
   "author": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/zeroqs"
   },
   "license": "MIT",
-  "homepage": "https://github.com/zeroqs/react-glassy#readme",
+  "homepage": "https://react-glassy-docs.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zeroqs/react-glassy.git"
