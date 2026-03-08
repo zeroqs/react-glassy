@@ -1,6 +1,6 @@
 {
   "name": "react-glassy-monorepo",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "private": true,
   "description": "React library for creating beautiful liquid glass morphism effects",
   "author": {
@@ -28,9 +28,14 @@
     "docs:dev": "pnpm --filter docs dev",
     "core:dev": "pnpm --filter react-glassy dev",
     "core:build": "pnpm --filter react-glassy build",
-    "docs:build": "pnpm --filter docs build"
+    "docs:build": "pnpm --filter docs build",
+    "release": "pnpm --filter react-glassy release && release-it",
+    "release:dry": "pnpm --filter react-glassy release --dry-run && release-it --dry-run"
   },
   "devDependencies": {
-    "pnpm": "^9.0.0"
+    "@release-it/bumper": "^7.0.5",
+    "@release-it/conventional-changelog": "^10.0.5",
+    "pnpm": "^9.0.0",
+    "release-it": "^19.2.4"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "react-glassy",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "description": "React library for creating beautiful liquid glass morphism effects with customizable presets and real-time configuration",
   "author": {
     "name": "zeroqs",
@@ -50,7 +50,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "release": "release-it"
   },
   "peerDependencies": {
     "react": ">=18",

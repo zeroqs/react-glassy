@@ -1,0 +1,25 @@
+{
+  "$schema": "https://unpkg.com/release-it/schema/release-it.json",
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "tagName": "v${version}",
+    "requireCleanWorkingDir": false,
+    "requireUpstream": true,
+    "push": true
+  },
+  "npm": {
+    "publish": false
+  },
+  "github": {
+    "release": true
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "conventionalcommits",
+      "infile": "packages/react-glassy/CHANGELOG.md"
+    }
+  },
+  "hooks": {
+    "before:init": ["pnpm core:build"]
+  }
+}
