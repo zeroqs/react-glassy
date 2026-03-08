@@ -12,7 +12,8 @@
   },
   "github": {
     "release": true,
-    "skipChecks": true
+    "skipChecks": true,
+    "web": true
   },
   "plugins": {
     "@release-it/conventional-changelog": {
