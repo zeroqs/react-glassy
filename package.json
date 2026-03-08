@@ -1,6 +1,6 @@
 {
   "name": "react-glassy-monorepo",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "description": "React library for creating beautiful liquid glass morphism effects",
   "author": {
