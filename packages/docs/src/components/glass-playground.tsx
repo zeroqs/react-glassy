@@ -1,12 +1,5 @@
-"use client";
-
 import { useState, useMemo } from "react";
-import {
-  LiquidGlass,
-  SVGFilters,
-  type GlassConfig,
-  type GlassPreset,
-} from "react-glassy";
+import { LiquidGlass, type GlassConfig, type GlassPreset } from "react-glassy";
 import { builtInPresets, DEFAULT_GLASS_CONFIG } from "react-glassy";
 import "react-glassy/styles.css";
 import { LiveDemo } from "./live-demo";
