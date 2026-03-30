@@ -1,15 +1,17 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import bgImage from "@/../assets/bg.webp";
 
 interface LiveDemoProps {
   children: ReactNode;
   className?: string;
+  style?: CSSProperties;
 }
 
-export function LiveDemo({ children, className }: LiveDemoProps) {
+export function LiveDemo({ children, className, style }: LiveDemoProps) {
   return (
     <div
       className={`relative rounded-lg overflow-hidden p-8 ${className ?? ""}`}
+      style={style}
     >
       <div
         className="absolute inset-0 rounded-lg live-demo-background"

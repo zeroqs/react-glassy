@@ -1,0 +1,137 @@
+---
+title: LensGlass Component
+description: Physics-based glass lens refraction effect using geometry-aware displacement maps
+---
+
+The `LensGlass` component creates a realistic optical refraction effect — light bends around
+the edges of the element like a real glass lens. Unlike `LiquidGlass`, this effect displaces
+the **background** behind the element using a geometry-aware displacement map derived from
+the element's exact dimensions and border radius.
+
+<Callout type="warn">
+  **Chromium only** — this component uses `backdropFilter: url('...')` with an inline SVG
+  filter, which Safari does not support. In Safari the element renders as fully transparent
+  (no blur, no distortion). If you need Safari support, use `LiquidGlass` instead —
+  it falls back gracefully to blur-only in Safari.
+
+  Safari also has a compositor limitation with `backdrop-filter: blur()` in general:
+  many blurred elements on screen simultaneously causes frame drops. Chrome and Firefox handle
+  this without issues.
+</Callout>
+
+## Props
+
+| Prop                  | Type        | Default | Description                                                     |
+| --------------------- | ----------- | ------- | --------------------------------------------------------------- |
+| `width`               | `number`    | —       | Element width in px (**required**)                              |
+| `height`              | `number`    | —       | Element height in px (**required**)                             |
+| `radius`              | `number`    | `20`    | Border radius in px                                             |
+| `depth`               | `number`    | `10`    | Lens depth — controls the gradient shape of the map             |
+| `blur`                | `number`    | `1`     | Backdrop blur (`blur/2` pre-filter, `blur` post-filter)         |
+| `chromaticAberration` | `number`    | `1`     | RGB channel split for a prism-like color fringe                 |
+| `strength`            | `number`    | `100`   | Overall displacement intensity                                  |
+| `children`            | `ReactNode` | —       | Optional content rendered inside the lens                       |
+| `className`           | `string`    | —       | Additional CSS classes                                          |
+
+## Basic Usage
+
+No `SVGFilters` setup required — `LensGlass` is fully self-contained:
+
+<LensDemo lensProps={{ width: 200, height: 200, radius: 20, depth: 10, blur: 1, chromaticAberration: 1 }} />
+
+## With Content
+
+Children render inside a dedicated content layer on top of the glass effect.
+The backdrop distortion stays behind — content is unaffected by the filter:
+
+<LensDemo
+  lensProps={{ width: 260, height: 180, radius: 24, depth: 10, blur: 1, chromaticAberration: 1 }}
+  minHeight="260px"
+>
+  <div className="flex flex-col items-center justify-center h-full gap-2 p-6 text-center">
+    <p className="text-lg font-semibold">Hello</p>
+    <p className="text-sm opacity-70">Content inside the lens</p>
+  </div>
+</LensDemo>
+
+## Variants
+
+### Pill
+
+<LensDemo lensProps={{ width: 300, height: 120, radius: 60, depth: 10, blur: 1, chromaticAberration: 1 }} minHeight="200px" />
+
+### Circle
+
+<LensDemo lensProps={{ width: 180, height: 180, radius: 90, depth: 10, blur: 1, chromaticAberration: 2 }} minHeight="260px" />
+
+### Strong chromatic aberration
+
+<LensDemo lensProps={{ width: 220, height: 220, radius: 20, depth: 10, blur: 1, chromaticAberration: 8 }} minHeight="300px" />
+
+## withLens HOC
+
+`withLens` wraps any component with `LensGlass` — useful when you want a fixed lens shape
+permanently attached to a specific component. The lens config is defined once at HOC creation;
+the wrapped component receives all its own props normally.
+
+```tsx
+import { withLens } from "react-glassy";
+import "react-glassy/styles.css";
+
+function ProfileCard({ name, role }: { name: string; role: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full gap-1 p-6 text-center">
+      <p className="text-lg font-semibold">{name}</p>
+      <p className="text-sm opacity-70">{role}</p>
+    </div>
+  );
+}
+
+export const GlassProfileCard = withLens(ProfileCard, {
+  width: 240,
+  height: 160,
+  radius: 24,
+  depth: 10,
+  blur: 1,
+  chromaticAberration: 1,
+});
+
+// Usage — pass only component props, lens config is fixed
+<GlassProfileCard name="Alice" role="Designer" />
+```
+
+<LiveDemo className="flex items-center justify-center min-h-[240px]">
+  <LensGlass width={240} height={160} radius={24} depth={10} blur={1} chromaticAberration={1}>
+    <div className="flex flex-col items-center justify-center h-full gap-1 p-6 text-center">
+      <p className="text-lg font-semibold">Alice</p>
+      <p className="text-sm opacity-70">Designer</p>
+    </div>
+  </LensGlass>
+</LiveDemo>
+
+## How It Works
+
+Unlike the turbulence-based filters in `LiquidGlass`, `LensGlass` generates a
+**geometry-aware displacement map** on the fly:
+
+1. **Displacement map** — an SVG with linear gradients (red = horizontal offset, green = vertical offset)
+   whose extents are computed from `radius / width` and `radius / height` ratios.
+   An inner rectangle with `filter="blur(${depth}px)"` creates the convex bulge.
+
+2. **Displacement filter** — an SVG filter using `feImage` to embed the map and
+   `feDisplacementMap` to warp the background. With `chromaticAberration > 0`, three separate
+   displacement maps run at different scales for R, G, B and are screen-blended — creating a
+   prism-like color fringe at the edges.
+
+3. **Backdrop filter chain**:
+   ```
+   backdropFilter: blur(N/2px) url('…filter') blur(Npx) brightness(1.1) saturate(1.5)
+   ```
+   Pre/post blur softens the displacement boundary; brightness and saturation compensate for
+   the darkening SVG displacement tends to introduce.
+
+Both SVGs are generated as `data:` URLs and memoized — they only regenerate when props change.
+
+## Interactive Playground
+
+<LensPlayground />

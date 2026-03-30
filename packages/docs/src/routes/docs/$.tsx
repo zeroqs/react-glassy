@@ -16,10 +16,11 @@ import { Suspense } from "react";
 import { LLMCopyButton, ViewOptions } from "@/components/ai/page-actions";
 import "react-glassy/styles.css";
 
-import { SVGFilters } from "react-glassy";
+import { SVGFilters, LiquidGlass, LensGlass } from "react-glassy";
 import { LiveDemo } from "@/components/live-demo";
-import { LiquidGlass } from "react-glassy";
 import { GlassPlayground } from "@/components/glass-playground";
+import { LensPlayground } from "@/components/lens-playground";
+import { LensDemo } from "@/components/lens-demo";
 
 export const Route = createFileRoute("/docs/$")({
   component: Page,
@@ -77,9 +78,12 @@ const clientLoader = browserCollections.docs.createClientLoader({
             components={{
               ...defaultMdxComponents,
               LiquidGlass,
+              LensGlass,
               SVGFilters,
               LiveDemo,
               GlassPlayground,
+              LensPlayground,
+              LensDemo,
             }}
           />
         </DocsBody>

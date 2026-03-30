@@ -5,6 +5,13 @@ description: Higher-order component for wrapping components with glass effects
 
 The `withLiquid` [higher-order component (HOC)](https://www.patterns.dev/react/hoc-pattern/) provides an alternative way to apply glass effects to your components. It's useful when you want to permanently attach a glass effect to a specific component.
 
+<Callout type="warn">
+  **Safari limitation** — this HOC wraps `LiquidGlass`, which inherits the same constraints:
+  SVG distortion filters don't work in Safari (only blur and tint render), and having many
+  glass-wrapped components simultaneously causes frame drops in Safari specifically. Chrome
+  and Firefox are unaffected by this blur performance issue.
+</Callout>
+
 ## Basic Usage
 
 Wrap your component with `withLiquid`:

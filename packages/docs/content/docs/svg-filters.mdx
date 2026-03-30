@@ -5,6 +5,17 @@ description: Understanding and using SVG filters for glass effects
 
 SVG filters are essential for creating the distortion effects in React Glassy. The `SVGFilters` is a [compound component](https://www.patterns.dev/react/compound-pattern/) that manages all SVG filter definitions.
 
+<Callout type="warn">
+  **Safari limitation** — SVG filters combined with `backdrop-filter` only work in Chromium-based
+  browsers (Chrome, Edge, Arc). In Safari, the `filter: url(#...)` reference is ignored and only
+  the `blur()` from `backdrop-filter` takes effect — the glass still renders, just without the
+  distortion layer.
+
+  Additionally, Safari has a known compositor limitation with `backdrop-filter: blur()`: having
+  many blurred elements on screen simultaneously causes noticeable frame drops. Chrome and Firefox
+  handle large numbers of blurred elements without this issue.
+</Callout>
+
 ## Why SVG Filters?
 
 SVG filters provide the distortion effect that makes the glass look more realistic. They use SVG `<filter>` elements with `feTurbulence`, `feGaussianBlur`, and `feDisplacementMap` to create the liquid-like morphing effect.

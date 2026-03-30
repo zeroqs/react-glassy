@@ -5,6 +5,15 @@ description: The main component for creating glass morphism effects
 
 The `LiquidGlass` component is the core of React Glassy. It wraps your content with a beautiful glass morphism effect that can be customized through presets or direct configuration.
 
+<Callout type="warn">
+  **Safari limitation** — the SVG distortion layer (`frost` prop) only works in Chromium-based
+  browsers (Chrome, Edge, Arc). In Safari, the blur and tint still render correctly, but the
+  `filter: url(#...)` reference is silently ignored — no distortion effect.
+
+  Safari also has a compositor limitation: many elements with `backdrop-filter: blur()` on screen
+  at the same time causes frame drops. Chrome and Firefox handle this without issues.
+</Callout>
+
 ## Props
 
 | Prop        | Type                   | Default      | Description                                                     |

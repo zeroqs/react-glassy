@@ -1,7 +1,10 @@
 export { SVGFilters } from "./SVGFilters";
 export { LiquidGlass } from "./LiquidGlass";
+export { LensGlass } from "./LensGlass";
+export type { LensGlassProps } from "./LensGlass";
 
 export { withLiquid } from "./hoc/withLiquid";
+export { withLens } from "./hoc/withLens";
 
 export { createPreset, mergeConfig, builtInPresets } from "./utils/presets";
 export { pickDefined } from "./utils/pickDefined";

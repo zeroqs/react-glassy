@@ -6,6 +6,22 @@ icon: Rocket
 
 React Glassy is a React library for creating beautiful liquid glass morphism effects. It provides customizable glass components with built-in presets, SVG filters, and real-time configuration options.
 
+## Browser Compatibility
+
+<Callout type="warn">
+  **SVG filters work in Chromium only.** React Glassy uses `filter: url(#...)` to apply
+  distortion effects. This works in Chrome, Edge, and Arc. In Safari, the SVG filter
+  reference is silently ignored — the glass still renders with blur and tint, but without
+  the distortion layer.
+
+  `LensGlass` goes further and uses `backdropFilter: url(...)`, which Safari doesn't support
+  at all — in Safari that component renders as fully transparent.
+
+  **Safari blur performance** — `backdrop-filter: blur()` in Safari has a known compositor
+  limitation: the more elements with blur on screen, the worse the frame rate. Chrome and
+  Firefox handle many blurred elements without this problem.
+</Callout>
+
 ## Installation
 
 Install React Glassy using your preferred package manager:
