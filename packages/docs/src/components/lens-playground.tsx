@@ -13,6 +13,8 @@ export function LensPlayground() {
   const [blur, setBlur] = useState(1);
   const [chromaticAberration, setChromaticAberration] = useState(1);
   const [strength, setStrength] = useState(100);
+  const [brightness, setBrightness] = useState(1.1);
+  const [saturate, setSaturate] = useState(1.5);
   const [activeTab, setActiveTab] = useState<"preview" | "code">("preview");
 
   const code = useMemo(() => {
@@ -24,6 +26,8 @@ export function LensPlayground() {
       `  blur={${blur}}`,
       `  chromaticAberration={${chromaticAberration}}`,
       strength !== 100 ? `  strength={${strength}}` : null,
+      brightness !== 1.1 ? `  brightness={${brightness}}` : null,
+      saturate !== 1.5 ? `  saturate={${saturate}}` : null,
     ]
       .filter(Boolean)
       .join("\n");
@@ -135,6 +139,36 @@ export function LensPlayground() {
             className="w-full"
           />
         </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Brightness: {brightness}
+          </label>
+          <input
+            type="range"
+            min="0.5"
+            max="2"
+            step="0.05"
+            value={brightness}
+            onChange={(e) => setBrightness(parseFloat(e.target.value))}
+            className="w-full"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            Saturate: {saturate}
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="4"
+            step="0.1"
+            value={saturate}
+            onChange={(e) => setSaturate(parseFloat(e.target.value))}
+            className="w-full"
+          />
+        </div>
       </div>
 
       <div className="border rounded-lg overflow-hidden">
@@ -174,6 +208,8 @@ export function LensPlayground() {
                 blur={blur}
                 chromaticAberration={chromaticAberration}
                 strength={strength}
+                brightness={brightness}
+                saturate={saturate}
               />
             </LiveDemo>
           )}

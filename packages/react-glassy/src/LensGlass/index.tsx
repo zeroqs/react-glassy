@@ -10,6 +10,8 @@ export interface LensGlassProps {
   blur?: number;
   chromaticAberration?: number;
   strength?: number;
+  brightness?: number;
+  saturate?: number;
   children?: ReactNode;
   className?: string;
 }
@@ -22,6 +24,8 @@ export function LensGlass({
   blur = 1,
   chromaticAberration = 1,
   strength = 100,
+  brightness = 1.1,
+  saturate = 1.5,
   children,
   className,
 }: LensGlassProps) {
@@ -42,8 +46,8 @@ export function LensGlass({
     width: `${width}px`,
     height: `${height}px`,
     borderRadius: `${radius}px`,
-    backdropFilter: `blur(${blur / 2}px) url('${filterUrl}') blur(${blur}px) brightness(1.1) saturate(1.5)`,
-    WebkitBackdropFilter: `blur(${blur / 2}px) url('${filterUrl}') blur(${blur}px) brightness(1.1) saturate(1.5)`,
+    backdropFilter: `blur(${blur / 2}px) url('${filterUrl}') blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
+    WebkitBackdropFilter: `blur(${blur / 2}px) url('${filterUrl}') blur(${blur}px) brightness(${brightness}) saturate(${saturate})`,
   };
 
   return (

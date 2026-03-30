@@ -18,6 +18,8 @@ const LENS_DEFAULTS: Partial<LensGlassProps> = {
   blur: 1,
   chromaticAberration: 1,
   strength: 100,
+  brightness: 1.1,
+  saturate: 1.5,
 };
 
 function buildCode(
