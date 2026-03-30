@@ -23,8 +23,8 @@ the element's exact dimensions and border radius.
 
 | Prop                  | Type        | Default | Description                                                     |
 | --------------------- | ----------- | ------- | --------------------------------------------------------------- |
-| `width`               | `number`    | —       | Element width in px (**required**)                              |
-| `height`              | `number`    | —       | Element height in px (**required**)                             |
+| `width`               | `number`    | —       | Width in px. If omitted, element fills its container (measured via `ResizeObserver`) |
+| `height`              | `number`    | —       | Height in px. If omitted, element fills its container (measured via `ResizeObserver`) |
 | `radius`              | `number`    | `20`    | Border radius in px                                             |
 | `depth`               | `number`    | `10`    | Lens depth — controls the gradient shape of the map             |
 | `blur`                | `number`    | `1`     | Backdrop blur (`blur/2` pre-filter, `blur` post-filter)         |
