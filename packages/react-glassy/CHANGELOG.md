@@ -1,11 +1,5 @@
 # Changelog
 
-## [0.5.0](https://github.com/zeroqs/react-glassy/compare/v0.4.0...v0.5.0) (2026-08-09)
-
-### Features
-
-* add EdgeGlass component with edge-only refraction (tw-glass port) ([db8820d](https://github.com/zeroqs/react-glassy/commit/db8820ded9933a913a0a9d835357b0675a82e2da))
-
 ## [0.6.0](https://github.com/zeroqs/react-glassy/compare/v0.3.1...v0.6.0) (2026-08-09)
 
 ### Features
