@@ -1,0 +1,162 @@
+---
+title: EdgeGlass Component
+description: Edge-only glass refraction — distorts the border of the element while keeping the center perfectly readable
+---
+
+The `EdgeGlass` component refracts the backdrop **only at the edges** of the element — the
+center stays completely undistorted. This is the key difference from `LensGlass`, whose
+displacement reaches deeper into the element. The approach is ported from
+[tw-glass](https://www.assistant-ui.com/tw-glass) by
+[assistant-ui](https://github.com/assistant-ui/assistant-ui/tree/main/packages/tw-glass) (MIT).
+
+Because the filter is declared in `objectBoundingBox` units, a **single SVG filter works for
+any element size** — no `ResizeObserver`, no per-size filter regeneration. All `EdgeGlass`
+instances with the same config share one DOM filter regardless of their dimensions, and the
+refraction band scales proportionally when the element resizes.
+
+<Callout type="warn">
+  **Chromium only** — like `LensGlass`, this component uses `backdropFilter: url(#...)`
+  with an SVG displacement filter, which Safari does not support. In Safari the element
+  renders without distortion. If you need Safari support, use `LiquidGlass` instead.
+</Callout>
+
+## Props
+
+| Prop                  | Type                  | Default  | Description                                                          |
+| --------------------- | --------------------- | -------- | -------------------------------------------------------------------- |
+| `width`               | `number`              | —        | Width in px. If omitted, the element fills its container             |
+| `height`              | `number`              | —        | Height in px. If omitted, the element fills its container            |
+| `radius`              | `number`              | `16`     | Border radius in px                                                  |
+| `strength`            | `number`              | `20`     | Displacement intensity as a fraction of element size (`20` → 10%)    |
+| `chromaticAberration` | `number`              | `0`      | RGB channel split; `0` = single-pass filter, `1` = tw-glass ratios   |
+| `inset`               | `number`              | `8`      | Width of the refracting edge band, in % of element size              |
+| `cornerRadius`        | `number`              | `4`      | Corner radius of the undistorted center zone (map units, 0–50)       |
+| `innerBlur`           | `number`              | `4`      | Softness of the transition between edge band and center              |
+| `outerBlur`           | `number`              | `1.5`    | Smoothing of the displacement gradients                              |
+| `shape`               | `"rect" \| "circle"`  | `"rect"` | Shape of the undistorted center zone                                 |
+| `blur`                | `number`              | `2`      | Backdrop blur in px, applied after the displacement filter           |
+| `brightness`          | `number`              | `1.05`   | `brightness()` in the backdrop filter chain                          |
+| `saturate`            | `number`              | `1.2`    | `saturate()` in the backdrop filter chain                            |
+| `children`            | `ReactNode`           | —        | Optional content rendered inside the glass                           |
+| `className`           | `string`              | —        | Additional CSS classes                                               |
+
+## Basic Usage
+
+Fully self-contained — no `SVGFilters` setup required:
+
+<EdgeDemo edgeProps={{ width: 240, height: 240 }} />
+
+## With Content
+
+The center is undistorted, so content behind the middle of the element stays readable —
+only the border band bends the background:
+
+<EdgeDemo
+  edgeProps={{ width: 280, height: 190, radius: 24 }}
+  minHeight="270px"
+>
+  <div className="flex flex-col items-center justify-center h-full gap-2 p-6 text-center">
+    <p className="text-lg font-semibold">Hello</p>
+    <p className="text-sm opacity-70">Only the edges refract</p>
+  </div>
+</EdgeDemo>
+
+## Variants
+
+### Stronger refraction
+
+<EdgeDemo edgeProps={{ width: 240, height: 240, strength: 40 }} />
+
+### Chromatic aberration
+
+Three displacement passes at different scales for R, G, B, screen-blended into a
+prism-like fringe at the edges:
+
+<EdgeDemo edgeProps={{ width: 240, height: 240, strength: 30, chromaticAberration: 1 }} />
+
+### Circle
+
+A circular neutral zone — pair it with a matching `radius` for round elements:
+
+<EdgeDemo edgeProps={{ width: 200, height: 200, radius: 100, shape: "circle", strength: 30 }} minHeight="280px" />
+
+### Wide edge band
+
+Increase `inset` to push the refraction deeper into the element:
+
+<EdgeDemo edgeProps={{ width: 280, height: 200, inset: 20, strength: 30 }} minHeight="280px" />
+
+## withEdge HOC
+
+`withEdge` wraps any component with `EdgeGlass`, mirroring `withLens` and `withLiquid`:
+
+```tsx
+import { withEdge } from "react-glassy";
+import "react-glassy/styles.css";
+
+function ProfileCard({ name, role }: { name: string; role: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full gap-1 p-6 text-center">
+      <p className="text-lg font-semibold">{name}</p>
+      <p className="text-sm opacity-70">{role}</p>
+    </div>
+  );
+}
+
+export const GlassProfileCard = withEdge(ProfileCard, {
+  width: 240,
+  height: 160,
+  radius: 24,
+  strength: 25,
+});
+
+// Usage — pass only component props, glass config is fixed
+<GlassProfileCard name="Alice" role="Designer" />
+```
+
+<LiveDemo className="flex items-center justify-center min-h-[240px]">
+  <EdgeGlass width={240} height={160} radius={24} strength={25}>
+    <div className="flex flex-col items-center justify-center h-full gap-1 p-6 text-center">
+      <p className="text-lg font-semibold">Alice</p>
+      <p className="text-sm opacity-70">Designer</p>
+    </div>
+  </EdgeGlass>
+</LiveDemo>
+
+## EdgeGlass vs LensGlass
+
+| | `EdgeGlass` | `LensGlass` |
+| --- | --- | --- |
+| Distortion area | Edge band only, center untouched | Whole element, strongest at edges |
+| Filter units | `objectBoundingBox` — size-independent | Pixels — map generated per exact size |
+| Resizing | Free — same filter for any size | Needs `ResizeObserver` + filter rebuild |
+| Filter sharing | One filter per **config** | One filter per **config + size** |
+| Look | Flat glass panel with refracting rim | Convex lens / droplet |
+
+Use `EdgeGlass` for UI surfaces (cards, navbars, dialogs) where content behind the center
+must stay readable. Use `LensGlass` when you want the full "liquid droplet" magnification look.
+
+## How It Works
+
+1. **Displacement map** — an SVG with a fixed `viewBox="0 0 100 100"` and
+   `preserveAspectRatio="none"`, so it stretches to any element. Red/green linear gradients
+   encode horizontal/vertical offsets; a neutral gray (`#808080`) inner shape with a small
+   blur (`innerBlur`) keeps the center displacement-free.
+
+2. **Displacement filter** — declared with `filterUnits="objectBoundingBox"` and
+   `primitiveUnits="objectBoundingBox"`: `feImage` spans the whole element (`0..1`) and
+   the `feDisplacementMap` scale is a fraction of element size (`strength / 200`), so the
+   effect scales with the element automatically. With `chromaticAberration > 0`, three
+   passes run at different scales for R, G, B and are screen-blended.
+
+3. **Backdrop filter chain**:
+   ```
+   backdropFilter: url(#filter) blur(2px) brightness(1.05) saturate(1.2)
+   ```
+
+The filter is injected once into a shared hidden `<svg>` container and reference-counted —
+mounting a hundred `EdgeGlass` elements with the same config creates exactly one filter node.
+
+## Interactive Playground
+
+<EdgePlayground />

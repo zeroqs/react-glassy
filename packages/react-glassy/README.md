@@ -7,6 +7,8 @@ A React library for creating beautiful liquid glass morphism effects with custom
 - 🎨 Beautiful glass morphism effects
 - ⚙️ Customizable presets and configuration
 - 🎭 Built-in SVG filters for distortion effects
+- 🔍 `LensGlass` — physics-based lens refraction with geometry-aware displacement maps
+- 🪟 `EdgeGlass` — edge-only refraction (undistorted center), size-independent filters
 - 🚀 Easy to use and lightweight
 - 📦 TypeScript support
 

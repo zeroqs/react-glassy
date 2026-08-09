@@ -8,6 +8,11 @@ the edges of the element like a real glass lens. Unlike `LiquidGlass`, this effe
 the **background** behind the element using a geometry-aware displacement map derived from
 the element's exact dimensions and border radius.
 
+<Callout type="info">
+  Want distortion **only at the edges** with a perfectly readable center? Check out
+  [EdgeGlass](/docs/edge-glass) — a scale-independent variant ported from tw-glass.
+</Callout>
+
 <Callout type="warn">
   **Chromium only** — this component uses `backdropFilter: url('...')` with an inline SVG
   filter, which Safari does not support. In Safari the element renders as fully transparent
